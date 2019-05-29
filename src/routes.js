@@ -1,5 +1,7 @@
 import Home from './pages/home.vue';
 import AboutPage from './pages/about.vue';
+import NodesStatus from './pages/nodes-status.vue';
+
 
 import PanelLeftPage from './pages/panel-left.vue';
 
@@ -15,5 +17,9 @@ export default [
   {
     path: '/panel-left/',
     component: PanelLeftPage
+  },
+  {
+    path: '/nodes-status/',
+    component: NodesStatus
   }
 ];
