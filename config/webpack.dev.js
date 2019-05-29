@@ -3,6 +3,7 @@ const commonConfig = require('./webpack.common');
 
 const CordovaHtmlOutputPlugin = require('../webpack/plugins/CordovaHtmlOutputPlugin.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+var FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = function() {
   return webpackMerge(commonConfig({ mode: 'development' }), {
@@ -18,7 +19,8 @@ module.exports = function() {
     },
     plugins: [
       new CordovaHtmlOutputPlugin(),
-      new ExtractTextPlugin("styles.css")
+      new ExtractTextPlugin("styles.css"),
+      new FriendlyErrorsWebpackPlugin()
     ]
   });
 }

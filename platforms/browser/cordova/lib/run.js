@@ -26,7 +26,7 @@ var cordovaServe = require('cordova-serve');
 
 module.exports.run = function (args) {
     // defaults
-    args.port = args.port || 8000;
+    args.port = args.port || 8081;
     args.target = args.target || 'default'; // make default the system browser
     args.noLogOutput = args.silent || false;
 
@@ -53,7 +53,7 @@ module.exports.run = function (args) {
                 startPage = 'index.html';
             }
 
-            var projectUrl = (new url.URL(`http://localhost:${server.port}/${startPage}`)).href;
+            var projectUrl = (new url.URL(`http://localhost:${server.port}`)).href; // http://localhost:${server.port}/${startPage}
 
             console.log('startPage = ' + startPage);
             console.log('Static file server running @ ' + projectUrl + '\nCTRL + C to shut down');

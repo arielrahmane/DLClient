@@ -41,12 +41,15 @@
             <f7-list-item title="Material (MD) Theme" external link="./index.html?theme=md"></f7-list-item>
             <f7-list-item title="Color Themes" link="/color-themes/"></f7-list-item>
             <f7-list-item title="Github" external link="https://github.com/kevinqqnj"></f7-list-item>
+            <f7-list-item v-bind:title="title"></f7-list-item>
         </f7-list>
     </f7-page>
 </template>
 <script>
   import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon } from 'framework7-vue';
+  import {get} from '../../../helpers/api';
   export default {
+    name: "HomePage",
     components: {
       f7Page,
       f7Navbar,
@@ -62,5 +65,42 @@
       f7Icon,
       f7Block
     },
+    data () {
+      return {
+        title: "hola",
+        description: ""
+      }
+    },
+    beforeMount () {
+
+    },
+    mounted () {
+      this.getTest();
+      console.log("HomePage mounted");
+    },
+    created () {
+      console.log("HomePage created");
+    },
+    breforeDestroy () {
+      console.log("HomePage destroyed");
+    },
+    computed: {
+
+    },
+    methods: {
+      getTest: function () {
+        get(
+          "", 
+          response => {
+            console.log(response.data);
+            this.title = response.data.title;
+            this.description = response.data.description;
+          },
+          error => {
+            console.log("Error al hacer http request: ", error);
+          }
+        )
+      }
+    }
   };
 </script>
