@@ -28,6 +28,8 @@ import FastClick from 'fastclick';
 // Import App Component
 import app from './main.vue';
 
+import Routes from './routes';
+
 
 // Import Vuex Storage
 import store from './assets/vuex/storage.js';
@@ -42,6 +44,13 @@ export default new Vue({
   // Root Element
   el: '#app',
   store,
+  framework7: {
+    root: '#app',
+    /* Uncomment to enable Material theme: */
+    // material: true,
+    routes: Routes,
+    swipePanel: 'left'
+  },
   render: c => c('app'),
   components: {
     app
