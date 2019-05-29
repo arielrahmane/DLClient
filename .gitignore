@@ -60,3 +60,10 @@ typings/
 
 # next.js build output
 .next
+
+### VueJS + WebPack ###
+www/*
+
+.DS_Store
+node_modules/
+dist/
