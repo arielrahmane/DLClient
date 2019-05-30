@@ -1,11 +1,11 @@
 <template>
   <f7-page>
-    <f7-navbar large title="Estados de Nodos" title-large="Estados de Nodos" back-link="Framework7"></f7-navbar>
+    <f7-navbar large title="Estados de Nodos" title-large="Nodos" back-link="Framework7"></f7-navbar>
     <f7-block-title>Estados de Nodos</f7-block-title>
     <f7-block strong>
       <f7-block-title>Links</f7-block-title>
         <f7-list>
-          <f7-list-item v-for="node in nodes[0]" link="#" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
+          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" link="#" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
         </f7-list>
     </f7-block>
     

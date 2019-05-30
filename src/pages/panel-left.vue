@@ -7,7 +7,7 @@
     <f7-block-title>Main View Navigation</f7-block-title>
     <f7-list>
       <f7-list-item link="/about/" title="About" panel-close></f7-list-item>
-      <f7-list-item link="/nodes-status/" title="Estado de Nodos" panel-close></f7-list-item>
+      <f7-list-item link="/nodes/" title="Nodos" panel-close></f7-list-item>
     </f7-list>
     <f7-block>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse faucibus mauris leo, eu bibendum neque congue non. Ut leo mauris, eleifend eu commodo a, egestas ac urna. Maecenas in lacus faucibus, viverra ipsum pulvinar, molestie arcu. Etiam lacinia venenatis dignissim. Suspendisse non nisl semper tellus malesuada suscipit eu et eros. Nulla eu enim quis quam elementum vulputate. Mauris ornare consequat nunc viverra pellentesque. Aenean semper eu massa sit amet aliquam. Integer et neque sed libero mollis elementum at vitae ligula. Vestibulum pharetra sed libero sed porttitor. Suspendisse a faucibus lectus.</p>

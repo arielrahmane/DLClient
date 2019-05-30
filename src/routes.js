@@ -19,7 +19,7 @@ export default [
     component: PanelLeftPage
   },
   {
-    path: '/nodes-status/',
+    path: '/nodes/',
     component: NodesStatus
   }
 ];
