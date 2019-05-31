@@ -1,11 +1,11 @@
 <template>
   <f7-page>
-    <f7-navbar large title="Estados de Nodos" title-large="Nodos" back-link="Framework7"></f7-navbar>
+    <f7-navbar large title="Nodos" title-large="Nodos" back-link="Atrás"></f7-navbar>
     <f7-block-title>Estados de Nodos</f7-block-title>
     <f7-block strong>
       <f7-block-title>Links</f7-block-title>
         <f7-list>
-          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" link="#" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
+          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" @click="nodeSelected(node)" link="/nodes/node" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
         </f7-list>
     </f7-block>
     
@@ -14,6 +14,7 @@
 <script>
   import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon } from 'framework7-vue';
   import {get} from '../helpers/api';
+  import {updateSelectedNode} from '../helpers/globalVar';
 
   export default {
     components: {
@@ -67,6 +68,9 @@
       isActive: function(value) {
         if (value) return "Activo";
         else return "Inactivo";
+      },
+      nodeSelected: function(node) {
+        updateSelectedNode(node);
       }
     }
   };

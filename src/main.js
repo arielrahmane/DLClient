@@ -22,6 +22,9 @@ import FontAwesome from '@fortawesome/fontawesome-free/css/all.min.css';
 // Import fastClick
 import FastClick from 'fastclick';
 
+//Import Vue-Bus
+import VueBus from 'vue-bus';
+
 // Import App Custom Styles
 // import AppStyles from './assets/sass/main.scss'
 
@@ -37,6 +40,7 @@ import store from './assets/vuex/storage.js';
 
 // Different F7-Vue plugin initialization with f7 v3.0
 Framework7.use(Framework7Vue);
+
 
 
 // Init Vue App
