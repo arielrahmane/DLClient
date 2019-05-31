@@ -1,6 +1,11 @@
 <template>
   <f7-page>
-    <f7-navbar large title="Nodos" title-large="Nodos" back-link="Atrás"></f7-navbar>
+    <f7-navbar>
+      <f7-nav-left>
+        <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
+      </f7-nav-left>
+      <div class="title">Nodos</div>
+    </f7-navbar>
     <f7-block-title>Estados de Nodos</f7-block-title>
     <f7-block strong>
       <f7-block-title>Links</f7-block-title>
@@ -12,7 +17,7 @@
   </f7-page>
 </template>
 <script>
-  import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon } from 'framework7-vue';
+  import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon, f7NavLeft, f7Link } from 'framework7-vue';
   import {get} from '../helpers/api';
   import {updateSelectedNode} from '../helpers/globalVar';
 
@@ -24,7 +29,9 @@
       f7Block,
       f7List,
       f7ListItem,
-      f7Icon
+      f7Icon, 
+      f7NavLeft, 
+      f7Link 
     },
     data () {
       return {
