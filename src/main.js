@@ -40,7 +40,7 @@ import store from './assets/vuex/storage.js';
 
 // Different F7-Vue plugin initialization with f7 v3.0
 Framework7.use(Framework7Vue);
-
+Vue.use(Framework7Vue);
 
 
 // Init Vue App

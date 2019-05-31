@@ -14,15 +14,25 @@
         <f7-block inner>
             <p>Este es un Data Logger.</p>
         </f7-block>
-        <f7-block-title class="searchbar-hide-on-search">Prueba de lista</f7-block-title>
-        <f7-list class="searchbar-hide-on-search">
-            <f7-list-item v-bind:title="title"></f7-list-item>
-        </f7-list>
+        <f7-block>
+          <f7-row>
+            <f7-col>
+              <f7-button fill>Button</f7-button>
+            </f7-col>
+            <f7-col>
+              <f7-button fill @click="startDevice()">Iniciar</f7-button>
+            </f7-col>
+            <f7-col>
+              <f7-button fill round>Round</f7-button>
+            </f7-col>
+          </f7-row>
+        </f7-block>
     </f7-page>
 </template>
+
 <script>
-  import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon } from 'framework7-vue';
-  import {get} from '../helpers/api';
+  import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, f7Button } from 'framework7-vue';
+  import {get, post} from '../helpers/api';
   export default {
     name: "HomePage",
     components: {
@@ -38,7 +48,10 @@
       f7Link,
       f7Searchbar,
       f7Icon,
-      f7Block
+      f7Block, 
+      f7Row, 
+      f7Col, 
+      f7Button
     },
     data () {
       return {
@@ -50,7 +63,7 @@
 
     },
     mounted () {
-      this.getTest();
+      // this.getTest();
       console.log("HomePage mounted");
     },
     created () {
@@ -75,6 +88,22 @@
             console.log("Error al hacer http request: ", error);
           }
         )
+      },
+      startDevice: function () {
+        let that = this;
+        // this.$f7.showPreloader('Iniciando el dispositivo');
+        post(
+            "",
+            response => {
+               // that.$f7.hidePreloader();
+            },
+            error => {
+              // that.$f7.hidePreloader();
+            },
+            {
+              value: 1
+            }
+          )
       }
     }
   };
