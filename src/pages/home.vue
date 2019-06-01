@@ -64,9 +64,11 @@
 
     },
     mounted () {
+      this.deviceStarted = getDeviceStarted();
       console.log("HomePage mounted");
     },
     created () {
+      this.deviceStarted = getDeviceStarted();
       console.log("HomePage created");
     },
     breforeDestroy () {

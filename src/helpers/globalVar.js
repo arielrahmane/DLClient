@@ -1,8 +1,9 @@
 // This is the selected node when clicked into the nodes list to display the node data
 var selectedNode_ = {};
 
-export const updateSelectedNode = function(newSelection) {
+export const updateSelectedNode = function(newSelection, callback) {
 	selectedNode_ = newSelection;
+	callback();
 }
 
 export const getSelectedNode = function() {

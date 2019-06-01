@@ -10,7 +10,7 @@
     <f7-block strong>
       <f7-block-title>Links</f7-block-title>
         <f7-list>
-          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" @click="nodeSelected(node)" link="/nodes/node" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
+          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" @click="nodeSelected(node)" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
         </f7-list>
     </f7-block>
     
@@ -77,7 +77,10 @@
         else return "Inactivo";
       },
       nodeSelected: function(node) {
-        updateSelectedNode(node);
+        const self = this;
+        updateSelectedNode(node, () => {
+          self.$f7router.navigate('/nodes/node');
+        });
       }
     }
   };
