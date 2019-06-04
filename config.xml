@@ -4,12 +4,12 @@
     <preference name="DisallowOverscroll" value="true"/>
     <hook src="hooks/hookers.js" type="before_prepare"/>
     <hook src="hooks/beforedep.js" type="before_deploy"/>
-    <name>DefaultTemplate</name>
+    <name>ArielDL</name>
     <description>
-        Brand new cordova project!
+        Data Logger App 
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="arielrahmane@gmail.com" href="http://cordova.io">
+        Ariel Rahmane
     </author>
     <content src="index.html"/>
     <plugin name="cordova-plugin-whitelist" spec="1"/>
@@ -22,6 +22,7 @@
     <allow-intent href="geo:*"/>
     <platform name="android">
         <allow-intent href="market:*"/>
+        <icon src="src/assets/images/unc.png" width="70" height="70" density="mdpi"/>
     </platform>
     <platform name="ios">
         <splash src="res/screen/ios/Default@2x~universal~anyany.png"/>

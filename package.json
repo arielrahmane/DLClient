@@ -49,6 +49,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
     "axios": "^0.18.0",
+    "cordova-android": "^8.0.0",
     "cordova-browser": "^6.0.0",
     "fastclick": "^1.0.6",
     "framework7": "^4.4.0",
@@ -57,6 +58,7 @@
     "loglevel": "^1.4.1",
     "material-design-icons": "^3.0.1",
     "vue": "^2.6.10",
+    "vue-bus": "^1.2.1",
     "vuex": "^3.1.1"
   },
   "displayName": "DefaultTemplate",
@@ -65,7 +67,8 @@
       "cordova-plugin-whitelist": {}
     },
     "platforms": [
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

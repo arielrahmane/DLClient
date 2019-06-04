@@ -14,15 +14,27 @@
         <f7-block inner>
             <p>Este es un Data Logger.</p>
         </f7-block>
-        <f7-block-title class="searchbar-hide-on-search">Prueba de lista</f7-block-title>
-        <f7-list class="searchbar-hide-on-search">
-            <f7-list-item v-bind:title="title"></f7-list-item>
-        </f7-list>
+        <f7-block>
+          <f7-row>
+            <f7-col>
+              <f7-button fill>Button</f7-button>
+            </f7-col>
+            <f7-col>
+              <f7-button fill v-if="!deviceStarted" @click="startDevice()">Iniciar</f7-button>
+              <f7-button fill v-if="deviceStarted" @click="stopDevice()">Pausar</f7-button>
+            </f7-col>
+            <f7-col>
+              <f7-button fill round>Round</f7-button>
+            </f7-col>
+          </f7-row>
+        </f7-block>
     </f7-page>
 </template>
+
 <script>
-  import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon } from 'framework7-vue';
-  import {get} from '../helpers/api';
+  import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, f7Button } from 'framework7-vue';
+  import {get, post} from '../helpers/api';
+  import {setDeviceStarted, getDeviceStarted} from '../helpers/globalVar';
   export default {
     name: "HomePage",
     components: {
@@ -38,22 +50,25 @@
       f7Link,
       f7Searchbar,
       f7Icon,
-      f7Block
+      f7Block, 
+      f7Row, 
+      f7Col, 
+      f7Button
     },
     data () {
       return {
-        title: "hola",
-        description: ""
+        deviceStarted: false
       }
     },
     beforeMount () {
 
     },
     mounted () {
-      this.getTest();
+      this.deviceStarted = getDeviceStarted();
       console.log("HomePage mounted");
     },
     created () {
+      this.deviceStarted = getDeviceStarted();
       console.log("HomePage created");
     },
     breforeDestroy () {
@@ -75,6 +90,43 @@
             console.log("Error al hacer http request: ", error);
           }
         )
+      },
+      startDevice: function () {
+        const self = this;
+        self.$f7.dialog.preloader('Buscando nodos activos');
+        setDeviceStarted(true);
+        this.deviceStarted = getDeviceStarted();
+        post(
+            "",
+            response => {
+              self.$f7.dialog.close();
+              self.$f7.dialog.alert('El DL ha comenzado a recopilar data', 'Terminado');
+            },
+            error => {
+               self.$f7.dialog.close();
+               self.$f7.dialog.alert('No se ha podido iniciar el DL', 'Error');
+            },
+            {
+              value: 1
+            }
+          )
+      },
+      stopDevice: function () {
+        const self = this;
+        setDeviceStarted(false);
+        this.deviceStarted = getDeviceStarted();
+        post(
+            "",
+            response => {
+              self.$f7.dialog.alert('La recopilación de data se encuentra en pausa', 'Pausa');
+            },
+            error => {
+              // that.$f7.hidePreloader();
+            },
+            {
+              value: 4
+            }
+          )
       }
     }
   };
