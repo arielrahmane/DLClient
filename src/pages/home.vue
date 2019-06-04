@@ -17,14 +17,8 @@
         <f7-block>
           <f7-row>
             <f7-col>
-              <f7-button fill>Button</f7-button>
-            </f7-col>
-            <f7-col>
-              <f7-button fill v-if="!deviceStarted" @click="startDevice()">Iniciar</f7-button>
-              <f7-button fill v-if="deviceStarted" @click="stopDevice()">Pausar</f7-button>
-            </f7-col>
-            <f7-col>
-              <f7-button fill round>Round</f7-button>
+              <f7-button fill round class="color-green" v-if="!deviceStarted" @click="startDevice(1)">Iniciar</f7-button>
+              <f7-button fill round class="color-red" v-if="deviceStarted" @click="stopDevice()">Parar</f7-button>
             </f7-col>
           </f7-row>
         </f7-block>
@@ -92,7 +86,7 @@
           }
         )
       },
-      startDevice: function () {
+      startDevice: function (mode) {
         const self = this;
         self.$f7.dialog.preloader('Buscando nodos activos');
         post(
@@ -108,7 +102,7 @@
                self.$f7.dialog.alert('No se ha podido iniciar el DL', 'Error');
             },
             {
-              value: 1
+              value: mode
             }
           )
       },
