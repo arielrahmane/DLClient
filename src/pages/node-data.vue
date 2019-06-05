@@ -5,8 +5,8 @@
     <f7-block strong>
       <f7-block-title>Data nodo {{selectedNode.nodeID}}</f7-block-title>
         <f7-list>
-          <f7-list-item title="Temperatura" :after="nodeData.temp"></f7-list-item>
-          <f7-list-item title="Humedad" :after="nodeData.humid"></f7-list-item>
+          <f7-list-item title="Temperatura" :after="print(nodeData.temp, '°C')"></f7-list-item>
+          <f7-list-item title="Humedad" :after="print(nodeData.humid, '%')"></f7-list-item>
           <f7-list-item title="Concentración de alcohol" :after="nodeData.alcohol"></f7-list-item>
           <f7-list-item title="Fecha" :after="nodeData.date"></f7-list-item>
           <f7-list-item title="Hora" :after="nodeData.time"></f7-list-item>
@@ -78,8 +78,8 @@
           }
         )
       },
-      print: function(text, value) {
-        return text + String(value);
+      print: function(value, text) {
+        return String(value) + text;
       },
       isActive: function(value) {
         if (value) return "Activo";

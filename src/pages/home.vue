@@ -4,7 +4,7 @@
             <f7-nav-left>
                 <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
             </f7-nav-left>
-            <div class="title">Ariel DL</div>
+            <div class="title">OpenDL</div>
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".searchbar-components" icon="fas fa-search"></f7-link>
             </f7-nav-right>
@@ -17,14 +17,8 @@
         <f7-block>
           <f7-row>
             <f7-col>
-              <f7-button fill>Button</f7-button>
-            </f7-col>
-            <f7-col>
-              <f7-button fill v-if="!deviceStarted" @click="startDevice()">Iniciar</f7-button>
-              <f7-button fill v-if="deviceStarted" @click="stopDevice()">Pausar</f7-button>
-            </f7-col>
-            <f7-col>
-              <f7-button fill round>Round</f7-button>
+              <f7-button fill round class="color-green" v-if="!deviceStarted" @click="startDevice(1)">Iniciar</f7-button>
+              <f7-button fill round class="color-red" v-if="deviceStarted" @click="stopDevice()">Parar</f7-button>
             </f7-col>
           </f7-row>
         </f7-block>
@@ -64,11 +58,11 @@
 
     },
     mounted () {
-      this.deviceStarted = getDeviceStarted();
+      this.askDeviceIfRunning();
       console.log("HomePage mounted");
     },
     created () {
-      this.deviceStarted = getDeviceStarted();
+      this.askDeviceIfRunning();
       console.log("HomePage created");
     },
     breforeDestroy () {
@@ -78,53 +72,51 @@
 
     },
     methods: {
-      getTest: function () {
+      askDeviceIfRunning: function () {
         get(
-          "", 
+          "device/isRunning", 
           response => {
-            console.log(response.data);
-            this.title = response.data.title;
-            this.description = response.data.description;
+            var isRunning = response.data;
+            setDeviceStarted(isRunning);
+            this.deviceStarted = getDeviceStarted();
           },
           error => {
+            this.deviceStarted = getDeviceStarted();
             console.log("Error al hacer http request: ", error);
           }
         )
       },
-      startDevice: function () {
+      startDevice: function (mode) {
         const self = this;
         self.$f7.dialog.preloader('Buscando nodos activos');
-        setDeviceStarted(true);
-        this.deviceStarted = getDeviceStarted();
         post(
-            "",
+            "device/start",
             response => {
               self.$f7.dialog.close();
+              setDeviceStarted(true);
               self.$f7.dialog.alert('El DL ha comenzado a recopilar data', 'Terminado');
+              this.deviceStarted = getDeviceStarted();
             },
             error => {
                self.$f7.dialog.close();
                self.$f7.dialog.alert('No se ha podido iniciar el DL', 'Error');
             },
             {
-              value: 1
+              value: mode
             }
           )
       },
       stopDevice: function () {
         const self = this;
-        setDeviceStarted(false);
-        this.deviceStarted = getDeviceStarted();
         post(
-            "",
+            "device/stop",
             response => {
+              setDeviceStarted(false);
+              this.deviceStarted = getDeviceStarted();
               self.$f7.dialog.alert('La recopilación de data se encuentra en pausa', 'Pausa');
             },
             error => {
-              // that.$f7.hidePreloader();
-            },
-            {
-              value: 4
+               self.$f7.dialog.alert(error.data.message, 'Error');
             }
           )
       }

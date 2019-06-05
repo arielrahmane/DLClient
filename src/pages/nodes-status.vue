@@ -8,16 +8,19 @@
     </f7-navbar>
     <f7-block-title>Estados de Nodos</f7-block-title>
     <f7-block strong>
-      <f7-block-title>Links</f7-block-title>
+      <f7-block-title>Lista de Nodos Activos</f7-block-title>
         <f7-list>
-          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" @click="nodeSelected(node)" :title="print('Nodo ', node.nodeID)" :after="isActive(node.active)"></f7-list-item>
+          <f7-list-item v-for="node in nodes[0]" v-bind:key="node.id" @click="nodeSelected(node)" :title="print('Nodo ', node.nodeID)">
+            <f7-badge v-if="node.active" color="white"><f7-icon f7="check" color="green"></f7-icon></f7-badge>
+            <f7-badge v-else color="white"><f7-icon f7="close" color="red"></f7-icon></f7-badge>
+          </f7-list-item>
         </f7-list>
     </f7-block>
     
   </f7-page>
 </template>
 <script>
-  import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon, f7NavLeft, f7Link } from 'framework7-vue';
+  import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon, f7NavLeft, f7Link, f7Badge } from 'framework7-vue';
   import {get} from '../helpers/api';
   import {updateSelectedNode} from '../helpers/globalVar';
 
@@ -31,7 +34,8 @@
       f7ListItem,
       f7Icon, 
       f7NavLeft, 
-      f7Link 
+      f7Link,
+      f7Badge
     },
     data () {
       return {

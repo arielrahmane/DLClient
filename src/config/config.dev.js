@@ -3,7 +3,7 @@ export default {
   api: {
     version: '',
     protocol: 'http',
-    host: '192.168.0.18',
+    host: '192.168.4.1',
     port: '8081',
     address: function () {
       return this.protocol +
