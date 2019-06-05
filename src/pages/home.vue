@@ -4,7 +4,7 @@
             <f7-nav-left>
                 <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
             </f7-nav-left>
-            <div class="title">Ariel DL</div>
+            <div class="title">OpenDL</div>
             <f7-nav-right>
                 <f7-link class="searchbar-enable" data-searchbar=".searchbar-components" icon="fas fa-search"></f7-link>
             </f7-nav-right>
