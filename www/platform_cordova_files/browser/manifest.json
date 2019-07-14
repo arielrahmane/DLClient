@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "OpenDL",
+  "short_name": "OpenDL",
+  "version": "com.DLClient",
+  "description": "Data Logger App",
+  "author": "Ariel Rahmane",
+  "icons": [],
+  "start_url": "index.html"
+}

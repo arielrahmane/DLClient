@@ -48,7 +48,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
+    "chart.js": "^2.8.0",
     "cordova-android": "^8.0.0",
     "cordova-browser": "^6.0.0",
     "fastclick": "^1.0.6",
@@ -59,6 +60,7 @@
     "material-design-icons": "^3.0.1",
     "vue": "^2.6.10",
     "vue-bus": "^1.2.1",
+    "vue-chartjs": "^3.4.2",
     "vuex": "^3.1.1"
   },
   "displayName": "DefaultTemplate",
