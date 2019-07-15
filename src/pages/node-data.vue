@@ -13,8 +13,7 @@
         </f7-list>
     </f7-block>
     <f7-block>
-      <test-chart :chart-data="datacollection"></test-chart>
-      <f7-button @click="getDataHistory(selectedNode.nodeID)">Actualizar</f7-button>
+      <f7-button @click="$f7router.navigate('/nodes/node/history')">Ver Historial</f7-button>
     </f7-block>
   </f7-page>
 </template>
@@ -90,39 +89,6 @@
             this.nodeData.time = createdAt.slice(11, 19);
           },
           error => {
-            console.log("Error al hacer http request: ", error);
-          }
-        )
-      },
-      getDataHistory: function (node) {
-        const self = this;
-        var chartOptions = {
-          labels: [],
-          datasets: [
-            {
-              label: 'Temperatura',
-              backgroundColor: '#61df19',
-              data: []
-            }
-          ]
-        };
-        var source = "nodes/" + String(node) + "/history/tempA";
-        self.$f7.dialog.preloader('Recopilando Data');
-        get(
-          source, 
-          response => {
-            var i = 0;
-            var inData = response.data;
-            for (i=0; i<inData.length; i++) {
-              chartOptions.labels.push(String(i));
-              chartOptions.datasets[0].data.push(inData[i].tempA);
-              this.testData.push(inData[i].tempA);
-            }
-            self.$f7.dialog.close();
-            this.datacollection = chartOptions;
-          },
-          error => {
-            self.$f7.dialog.close();
             console.log("Error al hacer http request: ", error);
           }
         )
