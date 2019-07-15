@@ -4,8 +4,9 @@
     <f7-block-title>Nodo {{selectedNode.nodeID}}</f7-block-title>
     <f7-block>
       <test-chart :chart-data="datacollection"></test-chart>
-      <f7-button @click="getDataHistory(selectedNode.nodeID)">Actualizar</f7-button>
+      <f7-button @click="getDataHistory(selectedNode.nodeID, 'tempA')">Actualizar</f7-button>
     </f7-block>
+    <span>{{responseData}}</span>
   </f7-page>
 </template>
 
@@ -31,7 +32,8 @@
       return {
         selectedNode: {},
         datacollection: null,
-        testData: []
+        testData: [],
+        responseData: ''
       }
     },
     beforeMount () {
@@ -51,7 +53,7 @@
 
     },
     methods: {
-      getDataHistory: function (node) {
+      getDataHistory: function (node, variable) {
         const self = this;
         var chartOptions = {
           labels: [],
@@ -63,17 +65,18 @@
             }
           ]
         };
-        var source = "nodes/" + String(node) + "/history/tempA";
+        var source = "nodes/" + String(node) + "/history/" + variable;
         self.$f7.dialog.preloader('Recopilando Data');
         get(
           source, 
           response => {
             var i = 0;
             var inData = response.data;
+            this.responseData = JSON.stringify(response.data);
             for (i=0; i<inData.length; i++) {
               chartOptions.labels.push(String(i));
-              chartOptions.datasets[0].data.push(inData[i].tempA);
-              this.testData.push(inData[i].tempA);
+              chartOptions.datasets[0].data.push(inData[i][variable]);
+              this.testData.push(inData[i][variable]);
             }
             self.$f7.dialog.close();
             this.datacollection = chartOptions;
