@@ -5,8 +5,8 @@
     <f7-block strong>
       <f7-block-title>Data nodo {{selectedNode.nodeID}}</f7-block-title>
         <f7-list>
-          <f7-list-item title="Temperatura" :after="print(nodeData.temp, '°C')"></f7-list-item>
-          <f7-list-item title="Humedad" :after="print(nodeData.humid, '%')"></f7-list-item>
+          <f7-list-item title="Temperatura" :after="print(nodeData.tempA, '°C')"></f7-list-item>
+          <f7-list-item title="Humedad" :after="print(nodeData.humidA, '%')"></f7-list-item>
           <f7-list-item title="Concentración de alcohol" :after="nodeData.alcohol"></f7-list-item>
           <f7-list-item title="Fecha" :after="nodeData.date"></f7-list-item>
           <f7-list-item title="Hora" :after="nodeData.time"></f7-list-item>
@@ -40,8 +40,12 @@
     data () {
       return {
         nodeData: {
-          temp: 0.0,
-          humid: 0.0,
+          tempA: 0.0,
+          tempB: 0.0,
+          tempC: 0.0,
+          humidA: 0.0,
+          humidB: 0.0,
+          humidC: 0.0,
           alcohol: 0.0,
           date: "",
           time: ""
@@ -74,8 +78,12 @@
         get(
           source, 
           response => {
-            this.nodeData.temp = response.data.temp;
-            this.nodeData.humid = response.data.humid;
+            this.nodeData.tempA = response.data.tempA;
+            this.nodeData.tempB = response.data.tempB;
+            this.nodeData.tempC = response.data.tempC;
+            this.nodeData.humidA = response.data.humidA;
+            this.nodeData.humidB = response.data.humidB;
+            this.nodeData.humidC = response.data.humidC;
             this.nodeData.alcohol = response.data.alcohol;
             var createdAt = response.data.createdAt;
             this.nodeData.date = createdAt.slice(0, 10);
@@ -98,7 +106,7 @@
             }
           ]
         };
-        var source = "nodes/" + String(node) + "/history/temp";
+        var source = "nodes/" + String(node) + "/history/tempA";
         self.$f7.dialog.preloader('Recopilando Data');
         get(
           source, 
@@ -107,8 +115,8 @@
             var inData = response.data;
             for (i=0; i<inData.length; i++) {
               chartOptions.labels.push(String(i));
-              chartOptions.datasets[0].data.push(inData[i].temp);
-              this.testData.push(inData[i].temp);
+              chartOptions.datasets[0].data.push(inData[i].tempA);
+              this.testData.push(inData[i].tempA);
             }
             self.$f7.dialog.close();
             this.datacollection = chartOptions;
