@@ -1,119 +1,142 @@
 <template>
   <f7-page>
     <f7-navbar>
-      <f7-nav-left back-link="atras"></f7-nav-left>
+      <f7-nav-left back-link="atrás"></f7-nav-left>
       <div class="title">Data Nodo {{selectedNode.nodeID}}</div>
     </f7-navbar>
-    <!--f7-navbar large :title="'Data Nodo ' + selectedNode.nodeID" back-link="atrás"></f7-navbar-->
 
+    <f7-swiper pagination scrollbar class="node-data-swiper">
+      <f7-swiper-slide>
+        <f7-block>
+        <f7-block-title>Sensor A</f7-block-title>
+          <f7-col>
+            <f7-row class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="nodeData.tempA/50"
+                :value-text="(nodeData.tempA) ? nodeData.tempA + '°C' : 'Error'"
+                value-text-color="#e44d4d"
+                border-color="#e44d4d"
+                label-text="Temperatura"
+                :label-font-weight="700"
+                label-font-size="16"
+              ></f7-gauge>
+            </f7-row>
+            <f7-row class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="nodeData.humidA/100"
+                :value-text="(nodeData.humidA) ? nodeData.humidA + '%' : 'Error'"
+                value-text-color="#3134e9"
+                border-color="#3134e9"
+                label-text="Humedad Relativa"
+                :label-font-weight="700"
+                label-font-size="16"
+              ></f7-gauge>
+            </f7-row>
+          </f7-col>
+        </f7-block>
+      </f7-swiper-slide>
+
+      <f7-swiper-slide>
+        <f7-block-title>Sensor B</f7-block-title>
+        <f7-block>
+          <f7-col>
+            <f7-row class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="nodeData.tempB/50"
+                :value-text="(nodeData.tempB) ? nodeData.tempB + '°C' : 'Error'"
+                value-text-color="#e44d4d"
+                border-color="#e44d4d"
+                label-text="Temperatura"
+                :label-font-weight="700"
+                label-font-size="16"
+              ></f7-gauge>
+            </f7-row>
+            <f7-row class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="nodeData.humidB/100"
+                :value-text="(nodeData.humidB) ? nodeData.humidB + '%' : 'Error'"
+                value-text-color="#3134e9"
+                border-color="#3134e9"
+                label-text="Humedad Relativa"
+                :label-font-weight="700"
+                label-font-size="16"
+              ></f7-gauge>
+            </f7-row>
+          </f7-col>
+        </f7-block>
+      </f7-swiper-slide>
+
+      <f7-swiper-slide>
+        <f7-block-title>Sensor C</f7-block-title>
+        <f7-block>
+          <f7-col>
+            <f7-row class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="nodeData.tempC/50"
+                :value-text="(nodeData.tempC) ? nodeData.tempC + '°C' : 'Error'"
+                value-text-color="#e44d4d"
+                border-color="#e44d4d"
+                label-text="Temperatura"
+                :label-font-weight="700"
+                label-font-size="16"
+              ></f7-gauge>
+            </f7-row>
+            <f7-row class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="nodeData.humidC/100"
+                :value-text="(nodeData.humidC) ? nodeData.humidC + '%' : 'Error'"
+                value-text-color="#3134e9"
+                border-color="#3134e9"
+                label-text="Humedad Relativa"
+                :label-font-weight="700"
+                label-font-size="16"
+              ></f7-gauge>
+            </f7-row>
+          </f7-col>
+        </f7-block>
+      </f7-swiper-slide>
+
+      <f7-swiper-slide>
+        <f7-block-title>Sensor de Gas</f7-block-title>
+        <f7-block>
+          <f7-row>
+            <f7-col class="text-align-center">
+              <f7-gauge
+                type="circle"
+                :value="(nodeData.alcohol/1024)"
+                :value-text="(nodeData.alcohol) ? ((nodeData.alcohol/1024)*100).toFixed(1) + '%' : 'Error'"
+                value-text-color="#2de12d"
+                border-color="#2de12d"
+                label-text="Concentración Alcohol"
+                :label-font-weight="700"
+                label-font-size="14"
+              ></f7-gauge>
+            </f7-col>
+          </f7-row>
+        </f7-block>
+      </f7-swiper-slide>
+    </f7-swiper>
+    
     <f7-block>
-      <f7-button @click="$f7router.navigate('/nodes/node/history')">Ver Historial</f7-button>
-    </f7-block>
-
-    <f7-block-title>Sensor A</f7-block-title>
-    <f7-block strong>
       <f7-row>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="nodeData.tempA/50"
-            :value-text="(nodeData.tempA) ? nodeData.tempA + '°C' : 'Error'"
-            value-text-color="#e44d4d"
-            border-color="#e44d4d"
-            label-text="Temperatura"
-            :label-font-weight="700"
-            label-font-size="16"
-          ></f7-gauge>
+        <f7-col>
+          <f7-button raised fill @click="slidePrev()">
+            <f7-icon f7="chevron_left"></f7-icon>
+          </f7-button>
         </f7-col>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="nodeData.humidA/100"
-            :value-text="(nodeData.humidA) ? nodeData.humidA + '%' : 'Error'"
-            value-text-color="#3134e9"
-            border-color="#3134e9"
-            label-text="Humedad Relativa"
-            :label-font-weight="700"
-            label-font-size="16"
-          ></f7-gauge>
+        <f7-col>
+          <f7-button raised fill @click="$f7router.navigate('/nodes/node/history')">Ver Historial</f7-button>
         </f7-col>
-      </f7-row>
-    </f7-block>
-
-    <f7-block-title>Sensor B</f7-block-title>
-    <f7-block strong>
-      <f7-row>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="nodeData.tempB/50"
-            :value-text="(nodeData.tempB) ? nodeData.tempB + '°C' : 'Error'"
-            value-text-color="#e44d4d"
-            border-color="#e44d4d"
-            label-text="Temperatura"
-            :label-font-weight="700"
-            label-font-size="16"
-          ></f7-gauge>
-        </f7-col>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="nodeData.humidB/100"
-            :value-text="(nodeData.humidB) ? nodeData.humidB + '%' : 'Error'"
-            value-text-color="#3134e9"
-            border-color="#3134e9"
-            label-text="Humedad Relativa"
-            :label-font-weight="700"
-            label-font-size="16"
-          ></f7-gauge>
-        </f7-col>
-      </f7-row>
-    </f7-block>
-
-    <f7-block-title>Sensor C</f7-block-title>
-    <f7-block strong>
-      <f7-row>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="nodeData.tempC/50"
-            :value-text="(nodeData.tempC) ? nodeData.tempC + '°C' : 'Error'"
-            value-text-color="#e44d4d"
-            border-color="#e44d4d"
-            label-text="Temperatura"
-            :label-font-weight="700"
-            label-font-size="16"
-          ></f7-gauge>
-        </f7-col>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="nodeData.humidC/100"
-            :value-text="(nodeData.humidC) ? nodeData.humidC + '%' : 'Error'"
-            value-text-color="#3134e9"
-            border-color="#3134e9"
-            label-text="Humedad Relativa"
-            :label-font-weight="700"
-            label-font-size="16"
-          ></f7-gauge>
-        </f7-col>
-      </f7-row>
-    </f7-block>
-
-    <f7-block-title>Sensor de Gas</f7-block-title>
-    <f7-block strong>
-      <f7-row>
-        <f7-col class="text-align-center">
-          <f7-gauge
-            type="circle"
-            :value="(nodeData.alcohol/1024)"
-            :value-text="(nodeData.alcohol) ? ((nodeData.alcohol/1024)*100).toFixed(1) + '%' : 'Error'"
-            value-text-color="#2de12d"
-            border-color="#2de12d"
-            label-text="Concentración Alcohol"
-            :label-font-weight="700"
-            label-font-size="14"
-          ></f7-gauge>
+        <f7-col>
+          <f7-button raised fill @click="slideNext()">
+            <f7-icon f7="chevron_right"></f7-icon>
+          </f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -122,7 +145,8 @@
 </template>
 
 <script>
-  import { f7Page, f7Navbar, f7NavLeft, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon, f7Button, f7Gauge, f7Row, f7Col } from 'framework7-vue';
+  import { f7Page, f7Navbar, f7NavLeft, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon, 
+          f7Button, f7Gauge, f7Row, f7Col, f7Swiper, f7SwiperSlide } from 'framework7-vue';
   import {get} from '../helpers/api';
   import {getSelectedNode} from '../helpers/globalVar';
   import testChart from '../components/charts/test';
@@ -141,6 +165,8 @@
       f7Gauge,
       f7Row, 
       f7Col,
+      f7Swiper, 
+      f7SwiperSlide,
       testChart
     },
     data () {
@@ -207,8 +233,11 @@
         if (value) return "Activo";
         else return "Inactivo";
       },
-      percentValue: function(number) {
-        return (value*100)/50;
+      slideNext: function() {
+        this.$f7.swiper.get('.node-data-swiper').slideNext();
+      },
+      slidePrev: function() {
+        this.$f7.swiper.get('.node-data-swiper').slidePrev();
       }
     }
   };
