@@ -29,6 +29,7 @@
   import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, f7Button } from 'framework7-vue';
   import {get, post} from '../helpers/api';
   import {setDeviceStarted, getDeviceStarted} from '../helpers/globalVar';
+
   export default {
     name: "HomePage",
     components: {
