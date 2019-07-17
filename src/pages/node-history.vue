@@ -2,7 +2,7 @@
   <f7-page>
 
     <f7-navbar large title="Historial" title-large="Historial" back-link="atrás"></f7-navbar>
-    <f7-block-title>Nodo {{selectedNode.nodeID}}</f7-block-title>
+    <!--f7-block-title>Nodo {{selectedNode.nodeID}}</f7-block-title-->
 
     <f7-block>
       <f7-row>
@@ -30,10 +30,19 @@
     >
       <f7-page-content>
         <f7-button @click="closeSheet()">
-            <f7-icon f7="chevron_down"></f7-icon>
-          </f7-button>
+          <f7-icon f7="chevron_down"></f7-icon>
+        </f7-button>
         <f7-block>
-          <p>Eaque maiores ducimus, impedit unde culpa qui, explicabo accusamus, non vero corporis voluptatibus similique odit ab...</p>
+          <f7-list>
+            <f7-list-input
+              label="Open in Modal"
+              type="datepicker"
+              @input="historyRange = $event.target.value.getValue()"
+              placeholder="Select date"
+              readonly
+              :calendar-params="{openIn: 'customModal', header: true, footer: true, dateFormat: 'MM dd yyyy', rangePicker: true}"
+            >Rango</f7-list-input>
+          </f7-list>
         </f7-block>
       </f7-page-content>
     </f7-sheet>
@@ -82,12 +91,13 @@
             </f7-block>
         </f7-swiper-slide>
     </f7-swiper>
+    <span>{{historyRange[0]}}</span>
 
   </f7-page>
 </template>
 
 <script>
-  import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7Icon, f7Button, f7Swiper, 
+  import { f7Page, f7Navbar, f7BlockTitle, f7Block, f7List, f7ListItem, f7ListInput, f7Icon, f7Button, f7Swiper, 
           f7SwiperSlide, f7Col, f7Row, f7Sheet, f7PageContent } from 'framework7-vue';
   import {get} from '../helpers/api';
   import {getSelectedNode} from '../helpers/globalVar';
@@ -101,6 +111,7 @@
       f7Block,
       f7List,
       f7ListItem,
+      f7ListInput,
       f7Icon,
       f7Button, 
       f7Swiper, 
@@ -124,7 +135,8 @@
             alcohol: null,
         },
         testData: [],
-        responseData: ''
+        responseData: '',
+        historyRange: ''
       }
     },
     beforeMount () {
