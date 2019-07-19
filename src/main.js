@@ -43,14 +43,14 @@ Framework7.use(Framework7Vue);
 Vue.use(Framework7Vue);
 
 
-// Init Vue App
+// Init Vue App for browser
 export default new Vue({
   // Root Element
   el: '#app',
   store,
   framework7: {
     root: '#app',
-    /* Uncomment to enable Material theme: */
+    // Uncomment to enable Material theme:
     // material: true,
     routes: Routes,
     swipePanel: 'left'
@@ -60,9 +60,62 @@ export default new Vue({
     app
   },
   mounted() {
+    document.addEventListener('backbutton', this.onBackButton, false);
     window.addEventListener('load', () => {
         // run after everything is in-place
         FastClick.attach(document.body);
     });
   },
+  methods: {
+    onBackButton () {
+      let l = this.$f7.mainView.history.length
+      let history = this.$f7.mainView.history
+      if (l > 2 &&
+          !history[l - 2].includes('login')) {
+        this.$f7.mainView.router.back()
+      } // TODO : else it should ask for a second tap on back to quit the app
+    }
+  },
 });
+
+
+/*
+// init app for device dev
+export default Vue.cordova.on('deviceready', () => {
+  // eslint-disable no-new, indent 
+    new Vue({
+      el: '#app',
+      store,
+      // Init Framework7 by passing parameters here
+      framework7: {
+        root: '#app',
+        // Uncomment to enable Material theme:
+        // material: true,
+        routes: Routes,
+        swipePanel: 'left'
+      },
+      mounted () {
+        document.addEventListener('backbutton', this.onBackButton, false);
+        window.addEventListener('load', () => {
+            // run after everything is in-place
+            FastClick.attach(document.body);
+        });
+      },
+      methods: {
+        onBackButton () {
+          let l = this.$f7.mainView.history.length
+          let history = this.$f7.mainView.history
+          if (l > 2 &&
+              !history[l - 2].includes('login')) {
+            this.$f7.mainView.router.back()
+          } // TODO : else it should ask for a second tap on back to quit the app
+        }
+      },
+      render: c => c('app'),
+      // Register App Component
+      components: {
+        app
+      }
+    })
+  })
+*/
