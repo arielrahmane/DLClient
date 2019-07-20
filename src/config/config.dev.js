@@ -2,9 +2,9 @@ export default {
   debug: false,
   api: {
     version: '',
-    protocol: 'http',
-    host: '192.168.0.7',
-    port: '8081',
+    protocol: 'https',
+    host: 'opendl.localtunnel.me',
+    port: '',
     address: function () {
       return this.protocol +
       '://' +

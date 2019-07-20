@@ -18,6 +18,13 @@ import MaterialIcons from 'material-design-icons/iconfont/material-icons.css';
 
 // Import Fontawesome Theme Styles
 import FontAwesome from '@fortawesome/fontawesome-free/css/all.min.css';
+/*import 'font-awesome/fonts/fontawesome-webfont.eot'
+import 'font-awesome/fonts/fontawesome-webfont.svg'
+import 'font-awesome/fonts/fontawesome-webfont.ttf'
+import 'font-awesome/fonts/fontawesome-webfont.woff'
+import 'font-awesome/fonts/fontawesome-webfont.woff2'
+import 'font-awesome/fonts/fontAwesome.otf'
+import 'font-awesome/css/font-awesome.min.css'*/
 
 // Import fastClick
 import FastClick from 'fastclick';
@@ -41,6 +48,7 @@ import store from './assets/vuex/storage.js';
 // Different F7-Vue plugin initialization with f7 v3.0
 Framework7.use(Framework7Vue);
 Vue.use(Framework7Vue);
+Vue.use(FontAwesome);
 
 
 // Init Vue App for browser
