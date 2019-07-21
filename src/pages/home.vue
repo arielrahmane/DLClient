@@ -16,17 +16,22 @@
         </f7-block>
         <f7-block>
           <f7-row>
-            <f7-col>
-              <f7-button fill round class="color-green" v-if="!deviceStarted" @click="startDevice(1)">Iniciar</f7-button>
-              <f7-button fill round class="color-red" v-if="deviceStarted" @click="stopDevice()">Parar</f7-button>
-            </f7-col>
+            <f7-col><f7-button fill class="color-green" :disabled="deviceStarted" @click="startDevice(1)">Iniciar</f7-button></f7-col>
+            <f7-col><f7-button fill class="color-red" :disabled="!deviceStarted" @click="stopDevice()">Parar</f7-button></f7-col>
+          </f7-row>
+          <p></p>
+          <f7-row>
+            <f7-col><f7-button fill class="color-blue" :disabled="!devicePaused" @click="restartDevice()">Renaudar</f7-button></f7-col>
+            <f7-col><f7-button fill class="color-yellow" :disabled="devicePaused" @click="pauseDevice()">Pausar</f7-button></f7-col>
           </f7-row>
         </f7-block>
     </f7-page>
 </template>
 
 <script>
-  import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, f7Button } from 'framework7-vue';
+  import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, 
+          f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, 
+          f7Button, f7Segmented } from 'framework7-vue';
   import {get, post} from '../helpers/api';
   import {setDeviceStarted, getDeviceStarted} from '../helpers/globalVar';
 
@@ -48,11 +53,13 @@
       f7Block, 
       f7Row, 
       f7Col, 
-      f7Button
+      f7Button,
+      f7Segmented
     },
     data () {
       return {
-        deviceStarted: false
+        deviceStarted: false,
+        devicePaused: false
       }
     },
     beforeMount () {
@@ -93,6 +100,7 @@
       },
       startDevice: function (mode) {
         const self = this;
+        this.devicePaused = false;
         self.$f7.dialog.preloader('Buscando nodos activos');
         post(
             "device/start",
@@ -113,6 +121,7 @@
       },
       stopDevice: function () {
         const self = this;
+        this.devicePaused = false;
         post(
             "device/stop",
             response => {
@@ -124,6 +133,14 @@
                self.$f7.dialog.alert(error.data.message, 'Error');
             }
           )
+      },
+      pauseDevice: function () {
+        // Make pause device request
+        this.devicePaused = true;
+      },
+      restartDevice: function() {
+        //Make restart device request
+        this.devicePaused = false;
       }
     }
   };
