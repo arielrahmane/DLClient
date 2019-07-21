@@ -122,15 +122,18 @@
       stopDevice: function () {
         const self = this;
         this.devicePaused = false;
+        self.$f7.dialog.preloader('Deteniendo dispositivo');
         post(
             "device/stop",
             response => {
+              self.$f7.dialog.close();
               setDeviceStarted(false);
               this.deviceStarted = getDeviceStarted();
               self.$f7.dialog.alert('La recopilación de data se encuentra en pausa', 'Pausa');
             },
             error => {
-               self.$f7.dialog.alert(error.data.message, 'Error');
+              self.$f7.dialog.close();
+              self.$f7.dialog.alert(error.data.message, 'Error');
             }
           )
       },
