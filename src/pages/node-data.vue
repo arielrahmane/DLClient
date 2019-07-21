@@ -206,10 +206,13 @@
     },
     methods: {
       getLatestData: function (node) {
+        var self = this;
+        self.$f7.dialog.preloader('Cargando Datos');
         var source = "nodes/" + String(node);
         get(
           source, 
           response => {
+            self.$f7.dialog.close();
             this.nodeData.tempA = response.data.tempA;
             this.nodeData.tempB = response.data.tempB;
             this.nodeData.tempC = response.data.tempC;
@@ -222,6 +225,7 @@
             this.nodeData.time = createdAt.slice(11, 19);
           },
           error => {
+            self.$f7.dialog.close();
             console.log("Error al hacer http request: ", error);
           }
         )

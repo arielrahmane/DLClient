@@ -74,14 +74,18 @@
     },
     methods: {
       askDeviceIfRunning: function () {
+        var self = this;
+        self.$f7.dialog.preloader('Cargando');
         get(
           "device/isRunning", 
           response => {
+            self.$f7.dialog.close();
             var isRunning = response.data;
             setDeviceStarted(isRunning);
             this.deviceStarted = getDeviceStarted();
           },
           error => {
+            self.$f7.dialog.close();
             this.deviceStarted = getDeviceStarted();
             console.log("Error al hacer http request: ", error);
           }
