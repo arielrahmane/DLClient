@@ -104,15 +104,18 @@
         )
       },
       updateSettings: function() {
-        var self = this;
+        const self = this;
         var nodes = parseFloat(this.amountOfNodes);
         var freq = parseFloat(this.sensorSamplingFreq);
+        self.$f7.dialog.preloader('Buscando nodos activos');
         put(
           "settings", 
           response => {
+            self.$f7.dialog.close();
             self.$f7.dialog.alert(response.data, 'Hecho');
           },
           error => {
+            self.$f7.dialog.close();
             self.$f7.dialog.alert('Entrada inválida', 'Error');
           },
           {

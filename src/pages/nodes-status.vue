@@ -60,15 +60,19 @@
     },
     methods: {
       getActiveNodes: function () {
+        var self = this;
+        self.$f7.dialog.preloader('Cargando Nodos');
         get(
           "nodes", 
           response => {
+            self.$f7.dialog.close();
             this.nodes.push(response.data);
             /*
             [ [ { "id": 8, "nodeID": 7, "active": true, "createdAt": "2019-05-30T20:19:08.000Z", "updatedAt": "2019-05-30T20:19:16.000Z" }, { "id": 13, "nodeID": 12, "active": true, "createdAt": "2019-05-30T20:19:08.000Z", "updatedAt": "2019-05-30T20:19:21.000Z" } ] ]
             */
           },
           error => {
+            self.$f7.dialog.close();
             console.log("Error al hacer http request: ", error);
           }
         )
