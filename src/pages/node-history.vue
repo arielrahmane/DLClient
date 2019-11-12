@@ -136,6 +136,16 @@
             humidC: null,
             alcohol: null,
         },
+        // This Object will store arrays of objects with the form {value: float, date: String}
+        extractedData: {
+            tempA: [], //tempA = [{value: value1, date: date1}, {value: value2, date: date2}]
+            tempB: [],
+            tempC: [],
+            humidA: [],
+            humidB: [],
+            humidC: [],
+            alcohol: [],
+        },
         testData: [],
         responseData: '',
         historyRange: ''
@@ -162,6 +172,10 @@
       getDataHistory: function (node, variable) {
         const self = this;
         var options = this.getSensorTypeOpt(variable);
+        var variableData = {
+          value: 0,
+          date: ""
+        }
         var chartOptions = {
           labels: [],
           datasets: [
@@ -180,13 +194,37 @@
             var i = 0;
             var inData = response.data;
             this.responseData = JSON.stringify(response.data);
-            for (i=0; i<inData.length; i++) {
-              chartOptions.labels.push(String(i));
+            this.extractedData[variable] = [];
+            var weekLabel = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+            var sum = 0;
+            var X = [];
+            var N = inData.length;
+            for (var j=0; j<7; j++) {
+              for (var n=parseInt(j*N/7); n<parseInt((j+1)*N/7); n++) {
+                sum = sum + inData[n][variable];
+              }
+              var average = sum/(N/7);
+              X.push(average);
+              chartOptions.labels.push(weekLabel[j]);
+              chartOptions.datasets[0].data.push(average);
+              sum = 0;
+            }
+
+            //TRABAJAR ESTA ITERACIÓN!!!!!!
+            //La data viene de atrás para adelante
+            /*for (i=inData.length-1; i>=0; i--) { //for (i=0; i<inData.length; i++)
+              chartOptions.labels.push((inData[i].createdAt).substring(11, 16));
               chartOptions.datasets[0].data.push(inData[i][variable]);
               this.testData.push(inData[i][variable]);
-            }
+              //Storing data for future use
+              variableData.value = inData[i][variable];
+              variableData.date = inData[i].createdAt;
+              this.extractedData[variable].push(variableData);
+            }*/
             self.$f7.dialog.close();
             this.datacollection[variable] = chartOptions;
+            console.log(inData);
           },
           error => {
             self.$f7.dialog.close();
