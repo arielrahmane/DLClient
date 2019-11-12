@@ -1,6 +1,11 @@
 <template>
   <f7-page>
-    <f7-navbar large title="About" title-large="About" back-link="Atrás"></f7-navbar>
+    <f7-navbar>
+      <f7-nav-left>
+        <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
+      </f7-nav-left>
+      <div class="title">Información</div>
+    </f7-navbar>
     <f7-block-title>Welcome to Framework7</f7-block-title>
     <f7-block strong>
       <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile apps or web apps with iOS or Android (Material) native look and feel. It is also an indispensable prototyping apps tool to show working app prototype as soon as possible in case you need to. Framework7 is created by Vladimir Kharlampidi (iDangero.us).</p>
@@ -11,7 +16,7 @@
   </f7-page>
 </template>
 <script>
-  import { f7Page, f7Navbar, f7BlockTitle, f7Block } from 'framework7-vue';
+  import { f7Page, f7Navbar, f7NavLeft, f7Link, f7BlockTitle, f7Block } from 'framework7-vue';
 
   export default {
     components: {
@@ -19,6 +24,8 @@
       f7Navbar,
       f7BlockTitle,
       f7Block,
+      f7NavLeft, 
+      f7Link
     },
   };
 </script>

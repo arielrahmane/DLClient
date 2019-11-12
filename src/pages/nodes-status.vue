@@ -1,11 +1,13 @@
 <template>
   <f7-page>
+    
     <f7-navbar>
       <f7-nav-left>
         <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
       </f7-nav-left>
       <div class="title">Nodos</div>
     </f7-navbar>
+
     <f7-block-title>Estados de Nodos</f7-block-title>
     <f7-block strong>
       <f7-block-title>Lista de Nodos Activos</f7-block-title>

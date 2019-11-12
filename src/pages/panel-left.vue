@@ -5,9 +5,9 @@
     <f7-block-title>Main View Navigation</f7-block-title>
     <f7-list>
       <f7-list-item link="/" title="Inicio" panel-close></f7-list-item>
-      <f7-list-item link="/about/" title="About" panel-close></f7-list-item>
       <f7-list-item link="/nodes/" title="Nodos" panel-close></f7-list-item>
       <f7-list-item link="/settings/" title="Configuración" panel-close></f7-list-item>
+      <f7-list-item link="/about/" title="Información" panel-close></f7-list-item>
     </f7-list>
 
   </f7-page>
