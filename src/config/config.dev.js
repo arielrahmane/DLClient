@@ -3,7 +3,8 @@ export default {
   api: {
     version: '',
     protocol: 'https',
-    host: 'opendl.localtunnel.me',
+    //host: 'opendl.localtunnel.me',
+    host: 'c8546c48.ngrok.io',
     port: '',
     address: function () {
       return this.protocol +

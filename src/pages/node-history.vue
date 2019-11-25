@@ -19,13 +19,36 @@
         <f7-block>
           <f7-list>
             <f7-list-input
-              label="Open in Modal"
+              label="Rango de fechas"
               type="datepicker"
-              @input="historyRange = $event.target.value.getValue()"
-              placeholder="Select date"
+              @calendar:change="(value) => {getCalendarValue(value)}"
+              placeholder="Rango de fechas"
               readonly
-              :calendar-params="{openIn: 'customModal', header: true, footer: true, dateFormat: 'MM dd yyyy', rangePicker: true}"
-            >Rango</f7-list-input>
+              :calendar-params="{
+                locale: 'es',
+                openIn: 'auto',
+                header: true, 
+                footer: true,
+                dateFormat: 'yyyy-mm-dd', 
+                rangePicker: true,
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                }"
+            >Elegir días</f7-list-input>
+            <f7-list-input
+              label="Día específico"
+              type="datepicker"
+              @calendar:change="(value) => {getCalendarValue(value)}"
+              placeholder="Elegir fecha"
+              readonly
+              :calendar-params="{
+                locale: 'es',
+                openIn: 'auto',
+                header: true, 
+                footer: true,
+                dateFormat: 'yyyy-mm-dd',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                }"
+            >Día específico</f7-list-input>
           </f7-list>
         </f7-block>
       </f7-page-content>
@@ -103,6 +126,7 @@
   import {get} from '../helpers/api';
   import {getSelectedNode} from '../helpers/globalVar';
   import testChart from '../components/charts/test';
+  import moment from 'moment'
 
   export default {
     components: {
@@ -148,7 +172,7 @@
         },
         testData: [],
         responseData: '',
-        historyRange: ''
+        historyRange: []
       }
     },
     beforeMount () {
@@ -157,6 +181,7 @@
     mounted () {
       this.selectedNode = getSelectedNode();
       this.initCharts();
+      this.historyRange.push(moment().format('YYYY-MM-DD') + ' 00:00:00');
       console.log("Node history mounted");
     },
     created () {
@@ -169,9 +194,11 @@
 
     },
     methods: {
-      getDataHistory: function (node, variable) {
+      getDataHistory: function (node, variable) { //, timeSpan, fromDate, toDate) {
+        console.log(this.historyRange);
         const self = this;
         var options = this.getSensorTypeOpt(variable);
+
         var variableData = {
           value: 0,
           date: ""
@@ -186,42 +213,31 @@
             }
           ]
         };
-        var source = "nodes/" + String(node) + "/history/" + variable;
+        var resource = "nodes/" + String(node) + "/history/" + variable;
+        //just for testing
+        var timeSpan = "hours";
+        var fromDate = this.historyRange[0];
+        var toDate = this.historyRange.length > 1 ? this.historyRange[1] : moment().format('YYYY-MM-DD HH:mm:ss');
+        console.log("From: " + fromDate + " to: " + toDate);
+        resource = this.getResource(String(node), variable, timeSpan, fromDate, toDate);
         self.$f7.dialog.preloader('Recopilando Data');
         get(
-          source, 
+          resource, 
           response => {
-            var i = 0;
             var inData = response.data;
             this.responseData = JSON.stringify(response.data);
             this.extractedData[variable] = [];
-            var weekLabel = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
-            var sum = 0;
-            var X = [];
-            var N = inData.length;
-            for (var j=0; j<7; j++) {
-              for (var n=parseInt(j*N/7); n<parseInt((j+1)*N/7); n++) {
-                sum = sum + inData[n][variable];
-              }
-              var average = sum/(N/7);
-              X.push(average);
-              chartOptions.labels.push(weekLabel[j]);
-              chartOptions.datasets[0].data.push(average);
-              sum = 0;
-            }
-
-            //TRABAJAR ESTA ITERACIÓN!!!!!!
             //La data viene de atrás para adelante
-            /*for (i=inData.length-1; i>=0; i--) { //for (i=0; i<inData.length; i++)
-              chartOptions.labels.push((inData[i].createdAt).substring(11, 16));
+            for (var i=0; i<inData.length; i++) { //(i=inData.length-1; i>=0; i--)
+              chartOptions.labels.push((inData[i].date)); //.substring(11, 16));
               chartOptions.datasets[0].data.push(inData[i][variable]);
               this.testData.push(inData[i][variable]);
               //Storing data for future use
               variableData.value = inData[i][variable];
-              variableData.date = inData[i].createdAt;
+              variableData.date = inData[i].date;
               this.extractedData[variable].push(variableData);
-            }*/
+            }
             self.$f7.dialog.close();
             this.datacollection[variable] = chartOptions;
             console.log(inData);
@@ -291,8 +307,20 @@
           this.datacollection[variables[i]] = chartOptions
         }
       },
+      getResource: function(node, variable, timeSpan, fromDate, toDate) {
+        var resource = "nodes/" + String(node) + "/history/" + variable + 
+        "?timeSpan=" + timeSpan + "&fromDate=" + fromDate + "&toDate=" + toDate;
+        return resource;
+      },
       closeSheet: function() {
         this.$f7.sheet.close();
+      },
+      getCalendarValue(date) {
+        this.historyRange = [];
+        for (var i=0; i<date.length; i++) {
+          var stringDate = moment(date[i]).format('YYYY-MM-DD HH:mm:ss');
+          this.historyRange.push(stringDate);
+        }
       }
     }
   };
