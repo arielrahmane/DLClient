@@ -215,7 +215,7 @@
         };
 
         var fromDate = this.historyRange[0];
-        var toDate = this.historyRange.length > 1 ? this.historyRange[1] : moment(fromDate, 'YYYY-MM-DD HH:mm:ss').add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+        var toDate = this.historyRange.length > 1 ? this.historyRange[1] : moment(fromDate, 'YYYY-MM-DD HH:mm:ss').add(23, 'hours').format('YYYY-MM-DD HH:mm:ss');
         //We measure the dates difference to set the corret time span
         var fromDate_moment = moment(fromDate, 'YYYY-MM-DD HH:mm:ss');
         var toDate_moment = moment(toDate, 'YYYY-MM-DD HH:mm:ss');
