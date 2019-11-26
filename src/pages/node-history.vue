@@ -213,13 +213,17 @@
             }
           ]
         };
-        var resource = "nodes/" + String(node) + "/history/" + variable;
-        //just for testing
-        var timeSpan = "hours";
+
         var fromDate = this.historyRange[0];
-        var toDate = this.historyRange.length > 1 ? this.historyRange[1] : moment().format('YYYY-MM-DD HH:mm:ss');
-        console.log("From: " + fromDate + " to: " + toDate);
-        resource = this.getResource(String(node), variable, timeSpan, fromDate, toDate);
+        var toDate = this.historyRange.length > 1 ? this.historyRange[1] : moment(fromDate, 'YYYY-MM-DD HH:mm:ss').add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+        //We measure the dates difference to set the corret time span
+        var fromDate_moment = moment(fromDate, 'YYYY-MM-DD HH:mm:ss');
+        var toDate_moment = moment(toDate, 'YYYY-MM-DD HH:mm:ss');
+        var diff = toDate_moment.diff(fromDate_moment, 'days');
+        var timeSpan = diff > 3 ? "days" : "hours";
+        timeSpan = diff > 180 ? "months" : timeSpan;
+
+        var resource = this.getResource(String(node), variable, timeSpan, fromDate, toDate);
         self.$f7.dialog.preloader('Recopilando Data');
         get(
           resource, 
@@ -229,7 +233,7 @@
             this.extractedData[variable] = [];
 
             //La data viene de atrás para adelante
-            for (var i=0; i<inData.length; i++) { //(i=inData.length-1; i>=0; i--)
+            for (var i=0; i<inData.length; i++) {
               chartOptions.labels.push((inData[i].date)); //.substring(11, 16));
               chartOptions.datasets[0].data.push(inData[i][variable]);
               this.testData.push(inData[i][variable]);
@@ -315,10 +319,17 @@
       closeSheet: function() {
         this.$f7.sheet.close();
       },
+      /*
+        The add(i, 'days) method is used because of the following reason.
+        When the user selects a date between e.g. 2019-11-11 and 2019-11-15, the request will be for
+        node data between 2019-11-11 00:00:00 and 2019-11-15 00:00:00. Therefore, the user will not
+        obtain the data of the latter selected date. In order to include the data of that day, we use
+        the add method for the second chosen date.
+      */
       getCalendarValue(date) {
         this.historyRange = [];
         for (var i=0; i<date.length; i++) {
-          var stringDate = moment(date[i]).format('YYYY-MM-DD HH:mm:ss');
+          var stringDate = moment(date[i]).add(i, 'days').format('YYYY-MM-DD HH:mm:ss');
           this.historyRange.push(stringDate);
         }
       }
