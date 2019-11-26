@@ -32,6 +32,8 @@ import FastClick from 'fastclick';
 //Import Vue-Bus
 import VueBus from 'vue-bus';
 
+//import NPM packages
+
 // Import App Custom Styles
 // import AppStyles from './assets/sass/main.scss'
 

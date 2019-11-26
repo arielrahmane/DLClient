@@ -19,13 +19,36 @@
         <f7-block>
           <f7-list>
             <f7-list-input
-              label="Open in Modal"
+              label="Rango de fechas"
               type="datepicker"
-              @input="historyRange = $event.target.value.getValue()"
-              placeholder="Select date"
+              @calendar:change="(value) => {getCalendarValue(value)}"
+              placeholder="Rango de fechas"
               readonly
-              :calendar-params="{openIn: 'customModal', header: true, footer: true, dateFormat: 'MM dd yyyy', rangePicker: true}"
-            >Rango</f7-list-input>
+              :calendar-params="{
+                locale: 'es',
+                openIn: 'auto',
+                header: true, 
+                footer: true,
+                dateFormat: 'yyyy-mm-dd', 
+                rangePicker: true,
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                }"
+            >Elegir días</f7-list-input>
+            <f7-list-input
+              label="Día específico"
+              type="datepicker"
+              @calendar:change="(value) => {getCalendarValue(value)}"
+              placeholder="Elegir fecha"
+              readonly
+              :calendar-params="{
+                locale: 'es',
+                openIn: 'auto',
+                header: true, 
+                footer: true,
+                dateFormat: 'yyyy-mm-dd',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+                }"
+            >Día específico</f7-list-input>
           </f7-list>
         </f7-block>
       </f7-page-content>
@@ -103,6 +126,7 @@
   import {get} from '../helpers/api';
   import {getSelectedNode} from '../helpers/globalVar';
   import testChart from '../components/charts/test';
+  import moment from 'moment'
 
   export default {
     components: {
@@ -136,9 +160,19 @@
             humidC: null,
             alcohol: null,
         },
+        // This Object will store arrays of objects with the form {value: float, date: String}
+        extractedData: {
+            tempA: [], //tempA = [{value: value1, date: date1}, {value: value2, date: date2}]
+            tempB: [],
+            tempC: [],
+            humidA: [],
+            humidB: [],
+            humidC: [],
+            alcohol: [],
+        },
         testData: [],
         responseData: '',
-        historyRange: ''
+        historyRange: []
       }
     },
     beforeMount () {
@@ -147,6 +181,7 @@
     mounted () {
       this.selectedNode = getSelectedNode();
       this.initCharts();
+      this.historyRange.push(moment().format('YYYY-MM-DD') + ' 00:00:00');
       console.log("Node history mounted");
     },
     created () {
@@ -159,9 +194,15 @@
 
     },
     methods: {
-      getDataHistory: function (node, variable) {
+      getDataHistory: function (node, variable) { //, timeSpan, fromDate, toDate) {
+        console.log(this.historyRange);
         const self = this;
         var options = this.getSensorTypeOpt(variable);
+
+        var variableData = {
+          value: 0,
+          date: ""
+        }
         var chartOptions = {
           labels: [],
           datasets: [
@@ -172,21 +213,40 @@
             }
           ]
         };
-        var source = "nodes/" + String(node) + "/history/" + variable;
+
+        var fromDate = this.historyRange[0];
+        var toDate = this.historyRange.length > 1 ? this.historyRange[1] : moment(fromDate, 'YYYY-MM-DD HH:mm:ss').add(23, 'hours').format('YYYY-MM-DD HH:mm:ss');
+        //We measure the dates difference to set the corret time span
+        var fromDate_moment = moment(fromDate, 'YYYY-MM-DD HH:mm:ss');
+        var toDate_moment = moment(toDate, 'YYYY-MM-DD HH:mm:ss');
+        var diff = toDate_moment.diff(fromDate_moment, 'days');
+        var timeSpan = diff > 3 ? "days" : "hours";
+        timeSpan = diff > 180 ? "months" : timeSpan;
+
+        var resource = this.getResource(String(node), variable, timeSpan, fromDate, toDate);
         self.$f7.dialog.preloader('Recopilando Data');
         get(
-          source, 
+          resource, 
           response => {
-            var i = 0;
             var inData = response.data;
             this.responseData = JSON.stringify(response.data);
-            for (i=0; i<inData.length; i++) {
-              chartOptions.labels.push(String(i));
+            this.extractedData[variable] = [];
+
+            for (var i=0; i<inData.length; i++) {
+              var date_moment = moment(inData[i].date, 'YYYY-MM-DD HH:mm:ss');
+              var dateFormat = timeSpan === "hours" ? date_moment.hour() : date_moment.date() + "/" + date_moment.month();
+              chartOptions.labels.push(dateFormat);
               chartOptions.datasets[0].data.push(inData[i][variable]);
               this.testData.push(inData[i][variable]);
+              //Storing data for future use
+              variableData.value = inData[i][variable];
+              variableData.date = inData[i].date;
+              this.extractedData[variable].push(variableData);
             }
             self.$f7.dialog.close();
             this.datacollection[variable] = chartOptions;
+
+            if (inData.length === 0) self.$f7.dialog.alert('No se registró información en las fechas solicitadas', 'No hay data');
           },
           error => {
             self.$f7.dialog.close();
@@ -253,8 +313,27 @@
           this.datacollection[variables[i]] = chartOptions
         }
       },
+      getResource: function(node, variable, timeSpan, fromDate, toDate) {
+        var resource = "nodes/" + String(node) + "/history/" + variable + 
+        "?timeSpan=" + timeSpan + "&fromDate=" + fromDate + "&toDate=" + toDate;
+        return resource;
+      },
       closeSheet: function() {
         this.$f7.sheet.close();
+      },
+      /*
+        The add(i, 'days) method is used because of the following reason.
+        When the user selects a date between e.g. 2019-11-11 and 2019-11-15, the request will be for
+        node data between 2019-11-11 00:00:00 and 2019-11-15 00:00:00. Therefore, the user will not
+        obtain the data of the latter selected date. In order to include the data of that day, we use
+        the add method for the second chosen date.
+      */
+      getCalendarValue(date) {
+        this.historyRange = [];
+        for (var i=0; i<date.length; i++) {
+          var stringDate = moment(date[i]).add(i, 'days').format('YYYY-MM-DD HH:mm:ss');
+          this.historyRange.push(stringDate);
+        }
       }
     }
   };
