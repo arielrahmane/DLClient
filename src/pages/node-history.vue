@@ -232,9 +232,10 @@
             this.responseData = JSON.stringify(response.data);
             this.extractedData[variable] = [];
 
-            //La data viene de atrás para adelante
             for (var i=0; i<inData.length; i++) {
-              chartOptions.labels.push((inData[i].date)); //.substring(11, 16));
+              var date_moment = moment(inData[i].date, 'YYYY-MM-DD HH:mm:ss');
+              var dateFormat = timeSpan === "hours" ? date_moment.hour() : date_moment.date() + "/" + date_moment.month();
+              chartOptions.labels.push(dateFormat);
               chartOptions.datasets[0].data.push(inData[i][variable]);
               this.testData.push(inData[i][variable]);
               //Storing data for future use
@@ -244,7 +245,8 @@
             }
             self.$f7.dialog.close();
             this.datacollection[variable] = chartOptions;
-            console.log(inData);
+
+            if (inData.length === 0) self.$f7.dialog.alert('No se registró información en las fechas solicitadas', 'No hay data');
           },
           error => {
             self.$f7.dialog.close();
