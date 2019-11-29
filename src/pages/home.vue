@@ -52,6 +52,10 @@
               </f7-list-input>
             </f7-list>
             <f7-button fill round class="color-blue" @click="exportData()">Enviar</f7-button>
+            
+            <f7-block>
+              <p> </p>
+            </f7-block>
           </f7-page-content>
         </f7-sheet>
     </f7-page>
@@ -60,7 +64,7 @@
 <script>
   import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, 
           f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, 
-          f7Button, f7Segmented, f7Sheet, f7PageContent, f7ListInput } from 'framework7-vue';
+          f7Button, f7Segmented, f7Sheet, f7PageContent, f7ListInput, f7Fab, f7FabButtons, f7FabButton } from 'framework7-vue';
   import {get, post} from '../helpers/api';
   import {setDeviceStarted, getDeviceStarted} from '../helpers/globalVar';
 
@@ -86,7 +90,10 @@
       f7Segmented,
       f7Sheet,
       f7PageContent,
-      f7ListInput
+      f7ListInput,
+      f7Fab,
+      f7FabButtons,
+      f7FabButton 
     },
     data () {
       return {
