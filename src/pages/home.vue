@@ -1,5 +1,5 @@
 <template>
-    <f7-page name="home">
+    <f7-page name="home" @page:beforeremove="onPageBeforeRemove" @page:beforeout="onPageBeforeOut">
         <f7-navbar>
             <f7-nav-left>
                 <f7-link class="panel-open" open-panel="left" icon="fas fa-bars"></f7-link>
@@ -10,9 +10,9 @@
             </f7-nav-right>
             <f7-searchbar class="searchbar-components" search-container=".components-list" search-in="a" expandable></f7-searchbar>
         </f7-navbar>
-        <f7-block-title>Bienvenido a Data Logger</f7-block-title>
+        <f7-block-title>OpenDL</f7-block-title>
         <f7-block inner>
-            <p>Este es un Data Logger.</p>
+            <p>OpenDL</p>
         </f7-block>
         <f7-block>
           <f7-row>
@@ -25,13 +25,42 @@
             <f7-col><f7-button fill class="color-yellow" :disabled="devicePaused" @click="pauseDevice()">Pausar</f7-button></f7-col>
           </f7-row>
         </f7-block>
+        <f7-block inner>
+            <f7-button fill sheet-open=".demo-sheet-swipe-to-close" round class="color-blue">Exportar data</f7-button>
+        </f7-block>
+
+        <f7-sheet
+          position="bottom"
+          class="demo-sheet-swipe-to-close"
+          style="height:auto; --f7-sheet-bg-color: #fff;"
+          swipe-to-close
+          backdrop
+        >
+          <f7-page-content>
+            <f7-list no-hairlines-md>
+              <f7-list-input
+                label="E-mail"
+                type="email"
+                placeholder="E-mail de destino"
+                required
+                validate
+                clear-button
+                :value="emailDestination"
+                @input="emailDestination = $event.target.value"
+              >
+                <f7-icon icon="demo-list-icon" slot="media"></f7-icon>
+              </f7-list-input>
+            </f7-list>
+            <f7-button fill round class="color-blue" @click="exportData()">Enviar</f7-button>
+          </f7-page-content>
+        </f7-sheet>
     </f7-page>
 </template>
 
 <script>
   import { f7Page, f7Block, f7Navbar, f7NavLeft, f7NavTitle, f7NavTitleLarge, f7NavRight, 
           f7BlockTitle, f7List, f7ListItem, f7Link, f7Searchbar, f7Icon, f7Row, f7Col, 
-          f7Button, f7Segmented } from 'framework7-vue';
+          f7Button, f7Segmented, f7Sheet, f7PageContent, f7ListInput } from 'framework7-vue';
   import {get, post} from '../helpers/api';
   import {setDeviceStarted, getDeviceStarted} from '../helpers/globalVar';
 
@@ -54,12 +83,16 @@
       f7Row, 
       f7Col, 
       f7Button,
-      f7Segmented
+      f7Segmented,
+      f7Sheet,
+      f7PageContent,
+      f7ListInput
     },
     data () {
       return {
         deviceStarted: false,
-        devicePaused: false
+        devicePaused: false,
+        emailDestination: ""
       }
     },
     beforeMount () {
@@ -144,6 +177,36 @@
       restartDevice: function() {
         //Make restart device request
         this.devicePaused = false;
+      },
+      exportData: function() {
+        var self = this;
+        if (this.emailDestination !== "") {
+          post(
+            "emailData",
+            response => {
+              self.$f7.dialog.alert('En breve el email será enviado a su destinatario', 'Listo');
+            },
+            error => {
+              self.$f7.dialog.alert(error.data.message, 'Error');
+            },
+            {
+              to: this.emailDestination
+            }
+          )
+        } else {
+          self.$f7.dialog.alert("Por favor, ingrese una dirección de mail válida", 'Error');
+        }
+        
+      },
+      onPageBeforeOut() {
+        const self = this;
+        // Close opened sheets on page out
+        self.$f7.sheet.close();
+      },
+      onPageBeforeRemove() {
+        const self = this;
+        // Destroy sheet modal when page removed
+        if (self.sheet) self.sheet.destroy();
       }
     }
   };
