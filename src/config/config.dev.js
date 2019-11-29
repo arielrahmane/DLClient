@@ -4,7 +4,7 @@ export default {
     version: '',
     protocol: 'https',
     host: 'opendl.localtunnel.me',
-    //host: 'f0743b4b.ngrok.io',
+    //host: '1e201434.ngrok.io',
     port: '',
     address: function () {
       return this.protocol +
