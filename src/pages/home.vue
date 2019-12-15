@@ -20,10 +20,6 @@
             <f7-col><f7-button fill class="color-red" :disabled="!deviceStarted" @click="stopDevice()">Parar</f7-button></f7-col>
           </f7-row>
           <p></p>
-          <f7-row>
-            <f7-col><f7-button fill class="color-blue" :disabled="!devicePaused" @click="restartDevice()">Renaudar</f7-button></f7-col>
-            <f7-col><f7-button fill class="color-yellow" :disabled="devicePaused" @click="pauseDevice()">Pausar</f7-button></f7-col>
-          </f7-row>
         </f7-block>
         <f7-block inner>
             <f7-button fill sheet-open=".demo-sheet-swipe-to-close" round class="color-blue">Exportar data</f7-button>
@@ -207,10 +203,12 @@
       },
       pauseDevice: function () {
         // Make pause device request
+        this.stopDevice();
         this.devicePaused = true;
       },
       restartDevice: function() {
         //Make restart device request
+        this.startDevice(3);
         this.devicePaused = false;
       },
       exportData: function() {
