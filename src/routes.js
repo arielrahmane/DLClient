@@ -1,12 +1,12 @@
-import Home from './assets/vue/pages/home.vue';
-import AboutPage from './assets/vue/pages/about.vue';
-import FormPage from './assets/vue/pages/form.vue';
-import DynamicRoutePage from './assets/vue/pages/dynamic-route.vue';
+import Home from './pages/home.vue';
+import AboutPage from './pages/about.vue';
+import NodesStatus from './pages/nodes-status.vue';
+import NodeData from './pages/node-data.vue';
+import NodeHistory from './pages/node-history.vue';
+import Settings from './pages/settings.vue';
 
-import PanelLeftPage from './assets/vue/pages/panel-left.vue';
-import ColorThemes from './assets/vue/pages/color-themes.vue';
-import Chat from './assets/vue/pages/chat.vue';
-import Vuex from './assets/vue/pages/vuex.vue';
+
+import PanelLeftPage from './pages/panel-left.vue';
 
 export default [
   {
@@ -18,27 +18,23 @@ export default [
     component: AboutPage
   },
   {
-    path: '/form/',
-    component: FormPage
-  },
-  {
-    path: '/dynamic-route/blog/:blogId/post/:postId/',
-    component: DynamicRoutePage
-  },
-  {
     path: '/panel-left/',
     component: PanelLeftPage
   },
   {
-    path: '/color-themes/',
-    component: ColorThemes
+    path: '/nodes/',
+    component: NodesStatus
   },
   {
-    path: '/chat/',
-    component: Chat
+    path: '/nodes/node',
+    component: NodeData
   },
   {
-    path: '/vuex/',
-    component: Vuex
+    path: '/nodes/node/history',
+    component: NodeHistory
   },
+  {
+    path: '/settings',
+    component: Settings
+  }
 ];

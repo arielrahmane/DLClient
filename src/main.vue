@@ -28,6 +28,7 @@ export default {
     data() {
         return {
             f7params: {
+                name: "My App",
                 theme,
                 routes,
                 id: 'io.framework7.testapp',
