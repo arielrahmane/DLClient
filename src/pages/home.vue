@@ -20,10 +20,6 @@
             <f7-col><f7-button fill class="color-red" :disabled="!deviceStarted" @click="stopDevice()">Parar</f7-button></f7-col>
           </f7-row>
           <p></p>
-          <f7-row>
-            <f7-col><f7-button fill class="color-blue" :disabled="!devicePaused" @click="restartDevice()">Renaudar</f7-button></f7-col>
-            <f7-col><f7-button fill class="color-yellow" :disabled="devicePaused" @click="pauseDevice()">Pausar</f7-button></f7-col>
-          </f7-row>
         </f7-block>
         <f7-block inner>
             <f7-button fill sheet-open=".demo-sheet-swipe-to-close" round class="color-blue">Exportar data</f7-button>
@@ -39,6 +35,33 @@
           <f7-page-content>
             <f7-list no-hairlines-md>
               <f7-list-input
+                label="Nodo"
+                type="select"
+                placeholder="Seleccionar Nodo"
+                required
+                clear-button
+                :value="nodeSelection"
+                @input="nodeSelection = $event.target.value"
+              >
+                <f7-icon icon="demo-list-icon" slot="media"></f7-icon>
+                <option value=0>Nodo 0</option>
+                <option value=1>Nodo 1</option>
+                <option value=2>Nodo 2</option>
+                <option value=3>Nodo 3</option>
+                <option value=4>Nodo 4</option>
+                <option value=5>Nodo 5</option>
+                <option value=6>Nodo 6</option>
+                <option value=7>Nodo 7</option>
+                <option value=8>Nodo 8</option>
+                <option value=9>Nodo 9</option>
+                <option value=10>Nodo 10</option>
+                <option value=11>Nodo 11</option>
+                <option value=12>Nodo 12</option>
+                <option value=13>Nodo 13</option>
+                <option value=14>Nodo 14</option>
+                <option value=15>Nodo 15</option>
+              </f7-list-input>
+              <f7-list-input
                 label="E-mail"
                 type="email"
                 placeholder="E-mail de destino"
@@ -51,7 +74,7 @@
                 <f7-icon icon="demo-list-icon" slot="media"></f7-icon>
               </f7-list-input>
             </f7-list>
-            <f7-button fill round class="color-blue" @click="exportData()">Enviar</f7-button>
+            <f7-button fill round class="color-blue" @click="exportNode()">Enviar</f7-button>
             
             <f7-block>
               <p> </p>
@@ -93,13 +116,14 @@
       f7ListInput,
       f7Fab,
       f7FabButtons,
-      f7FabButton 
+      f7FabButton
     },
     data () {
       return {
         deviceStarted: false,
         devicePaused: false,
-        emailDestination: ""
+        emailDestination: "",
+        nodeSelection: 0
       }
     },
     beforeMount () {
@@ -179,14 +203,17 @@
       },
       pauseDevice: function () {
         // Make pause device request
+        this.stopDevice();
         this.devicePaused = true;
       },
       restartDevice: function() {
         //Make restart device request
+        this.startDevice(3);
         this.devicePaused = false;
       },
       exportData: function() {
         var self = this;
+        console.log('Exporting data via email');
         if (this.emailDestination !== "") {
           post(
             "emailData",
@@ -198,6 +225,30 @@
             },
             {
               to: this.emailDestination
+            }
+          )
+        } else {
+          self.$f7.dialog.alert("Por favor, ingrese una dirección de mail válida", 'Error');
+        }
+        
+      },
+      exportNode: function() {
+        var self = this;
+        console.log('Exporting Node data via email');
+        console.log(this.nodeSelection);
+        if (this.emailDestination !== "") {
+          self.$f7.dialog.alert('En breve el email será enviado a su destinatario', 'Listo');
+          post(
+            "emailNode",
+            response => {
+              self.$f7.dialog.alert('Se envió el archivo adjunto', 'Enviado');
+            },
+            error => {
+              self.$f7.dialog.alert(error.data.message, 'Error');
+            },
+            {
+              to: this.emailDestination,
+              node: this.nodeSelection
             }
           )
         } else {

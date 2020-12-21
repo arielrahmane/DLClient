@@ -109,8 +109,8 @@
             <f7-col class="text-align-center">
               <f7-gauge
                 type="circle"
-                :value="(nodeData.alcohol/1024)"
-                :value-text="(nodeData.alcohol) ? ((nodeData.alcohol/1024)*100).toFixed(1) + '%' : 'Error'"
+                :value="(nodeData.alcohol/10)"
+                :value-text="(nodeData.alcohol) ? (nodeData.alcohol).toFixed(2) + 'mg/L' : 'Error'"
                 value-text-color="#2de12d"
                 border-color="#2de12d"
                 label-text="Concentración Alcohol"
