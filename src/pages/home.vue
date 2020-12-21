@@ -235,6 +235,7 @@
       exportNode: function() {
         var self = this;
         console.log('Exporting Node data via email');
+        console.log(this.nodeSelection);
         if (this.emailDestination !== "") {
           self.$f7.dialog.alert('En breve el email será enviado a su destinatario', 'Listo');
           post(
